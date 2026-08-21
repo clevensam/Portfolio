@@ -65,45 +65,6 @@ export const Navbar = ({ onOpenResume, activeSection }: NavbarProps) => {
     >
       <Container maxWidth="md">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          {/* Brand Logo & Name */}
-          <Box
-            component="a"
-            href="#"
-            id="nav-brand-logo"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-          >
-            <Box
-              sx={{
-                width: 34,
-                height: 34,
-                borderRadius: 2,
-                bgcolor: 'secondary.main',
-                color: 'secondary.contrastText',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: '0.8rem',
-              }}
-            >
-              CS
-            </Box>
-            <Box>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                {personalInfo.name}
-              </Typography>
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
-                Software Developer
-              </Typography>
-            </Box>
-          </Box>
-
           {/* Desktop Nav Links */}
           <Box
             sx={{
