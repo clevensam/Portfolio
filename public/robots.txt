@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://clevensam.github.io/Portfolio/sitemap.xml
+Sitemap: https://clevensamwel.vercel.app/sitemap.xml
