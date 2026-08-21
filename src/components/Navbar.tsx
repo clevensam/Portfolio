@@ -1,7 +1,26 @@
 import { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
-import { FileText, Github, Linkedin, Menu, X, ArrowUpRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+  Stack,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  Divider,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import DescriptionIcon from '@mui/icons-material/Description';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -32,150 +51,245 @@ export const Navbar = ({ onOpenResume, activeSection }: NavbarProps) => {
   ];
 
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/90 backdrop-blur-md border-b border-zinc-200 shadow-xs py-3'
-          : 'bg-transparent py-5'
-      }`}
+    <AppBar
+      position="fixed"
+      elevation={isScrolled ? 1 : 0}
+      sx={{
+        backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.92)' : 'transparent',
+        backdropFilter: isScrolled ? 'blur(12px)' : 'none',
+        borderBottom: isScrolled ? '1px solid #e4e4e7' : 'none',
+        color: 'text.primary',
+        transition: 'all 0.3s ease',
+        py: isScrolled ? 0.5 : 1.5,
+      }}
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-        {/* Brand */}
-        <a
-          href="#"
-          id="nav-brand-logo"
-          className="group flex items-center gap-2.5 text-zinc-900 hover:text-blue-600 transition-colors"
-        >
-          <div className="h-8 w-8 rounded-xl bg-zinc-900 flex items-center justify-center font-bold text-xs text-white group-hover:bg-blue-600 transition-colors shadow-xs">
-            CS
-          </div>
-          <div>
-            <div className="text-sm font-bold tracking-tight text-zinc-900 group-hover:text-blue-600 transition-colors">
-              {personalInfo.name}
-            </div>
-            <div className="text-[11px] text-zinc-500 font-medium">Software Developer</div>
-          </div>
-        </a>
+      <Container maxWidth="md">
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+          {/* Brand Logo & Name */}
+          <Box
+            component="a"
+            href="#"
+            id="nav-brand-logo"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <Box
+              sx={{
+                width: 34,
+                height: 34,
+                borderRadius: 2,
+                bgcolor: 'secondary.main',
+                color: 'secondary.contrastText',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 700,
+                fontSize: '0.8rem',
+              }}
+            >
+              CS
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                {personalInfo.name}
+              </Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
+                Software Developer
+              </Typography>
+            </Box>
+          </Box>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-1 bg-zinc-100/90 border border-zinc-200/80 rounded-full px-2.5 py-1 backdrop-blur-sm shadow-xs">
+          {/* Desktop Nav Links */}
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              gap: 0.5,
+              bgcolor: 'rgba(244, 244, 245, 0.9)',
+              border: '1px solid #e4e4e7',
+              borderRadius: 9999,
+              px: 1,
+              py: 0.5,
+            }}
+          >
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
+                <Button
+                  key={link.name}
+                  href={link.href}
+                  size="small"
+                  sx={{
+                    color: isActive ? 'primary.main' : 'text.secondary',
+                    bgcolor: isActive ? '#ffffff' : 'transparent',
+                    fontWeight: isActive ? 700 : 500,
+                    fontSize: '0.75rem',
+                    px: 1.5,
+                    py: 0.5,
+                    minWidth: 'auto',
+                    boxShadow: isActive ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
+                    '&:hover': {
+                      color: 'text.primary',
+                      bgcolor: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.6)',
+                    },
+                  }}
+                >
+                  {link.name}
+                </Button>
+              );
+            })}
+          </Box>
+
+          {/* Desktop Right CTAs */}
+          <Stack direction="row" spacing={1} sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
+            <IconButton
+              component="a"
+              href={personalInfo.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              sx={{ color: 'text.secondary', '&:hover': { color: 'text.primary' } }}
+              aria-label="GitHub Profile"
+            >
+              <GitHubIcon fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              component="a"
+              href={personalInfo.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              sx={{ color: 'text.secondary', '&:hover': { color: 'text.primary' } }}
+              aria-label="LinkedIn Profile"
+            >
+              <LinkedInIcon fontSize="small" />
+            </IconButton>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={onOpenResume}
+              id="nav-resume-btn"
+              startIcon={<DescriptionIcon sx={{ fontSize: 16 }} />}
+              sx={{ fontSize: '0.75rem', py: 0.8, px: 2 }}
+            >
+              Resume
+            </Button>
+          </Stack>
+
+          {/* Mobile Actions */}
+          <Stack direction="row" spacing={1} sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={onOpenResume}
+              sx={{ fontSize: '0.75rem', px: 1.5 }}
+            >
+              Resume
+            </Button>
+            <IconButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              color="inherit"
+              size="small"
+              sx={{ border: '1px solid #e4e4e7', borderRadius: 2 }}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <CloseIcon fontSize="small" /> : <MenuIcon fontSize="small" />}
+            </IconButton>
+          </Stack>
+        </Toolbar>
+      </Container>
+
+      {/* Mobile Drawer Navigation */}
+      <Drawer
+        anchor="top"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        slotProps={{
+          paper: {
+            sx: {
+              top: 56,
+              backgroundColor: '#ffffff',
+              borderBottom: '1px solid #e4e4e7',
+              px: 2,
+              py: 2,
+            },
+          },
+        }}
+      >
+        <List sx={{ width: '100%' }}>
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.substring(1);
             return (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 ${
-                  isActive
-                    ? 'text-blue-700 bg-white shadow-xs font-semibold'
-                    : 'text-zinc-600 hover:text-zinc-950 hover:bg-white/60'
-                }`}
-              >
-                {link.name}
-              </a>
+              <ListItem key={link.name} disablePadding>
+                <ListItemButton
+                  component="a"
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  sx={{
+                    borderRadius: 2,
+                    py: 1,
+                    '&:hover': { bgcolor: 'rgba(37, 99, 235, 0.08)' },
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: '0.9rem',
+                      fontWeight: isActive ? 700 : 500,
+                      color: isActive ? 'primary.main' : 'text.primary',
+                    }}
+                  >
+                    {link.name}
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
             );
           })}
-        </nav>
+        </List>
 
-        {/* Right CTAs */}
-        <div className="hidden sm:flex items-center gap-2">
-          <a
-            href={personalInfo.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            id="nav-github-link"
-            aria-label="GitHub Profile"
-            className="p-2 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl border border-transparent hover:border-zinc-200 transition-all"
-          >
-            <Github className="w-4 h-4" />
-          </a>
-          <a
-            href={personalInfo.linkedinUrl}
-            target="_blank"
-            rel="noreferrer"
-            id="nav-linkedin-link"
-            aria-label="LinkedIn Profile"
-            className="p-2 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl border border-transparent hover:border-zinc-200 transition-all"
-          >
-            <Linkedin className="w-4 h-4" />
-          </a>
+        <Divider sx={{ my: 1.5 }} />
 
-          <button
-            onClick={onOpenResume}
-            id="nav-resume-btn"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white hover:shadow-xs active:scale-95 transition-all cursor-pointer"
-          >
-            <FileText className="w-3.5 h-3.5 text-zinc-200" />
-            Resume (PDF)
-          </button>
-        </div>
-
-        {/* Mobile menu toggle */}
-        <div className="flex lg:hidden items-center gap-2">
-          <button
-            onClick={onOpenResume}
-            id="nav-mobile-resume-btn"
-            className="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 text-white"
-          >
-            Resume
-          </button>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            id="nav-mobile-menu-toggle"
-            aria-label="Toggle navigation menu"
-            className="p-2 text-zinc-700 hover:text-zinc-950 bg-zinc-100 border border-zinc-200 rounded-xl"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile dropdown */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-b border-zinc-200 bg-white/98 backdrop-blur-xl px-4 py-4 space-y-1.5 mt-2 shadow-lg"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3.5 py-2 text-sm font-medium text-zinc-700 hover:text-blue-600 hover:bg-zinc-50 rounded-xl transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="pt-3 border-t border-zinc-200 flex items-center justify-between text-xs text-zinc-500">
-              <div className="flex gap-4">
-                <a
-                  href={personalInfo.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 hover:text-zinc-900"
-                >
-                  <Github className="w-4 h-4" /> GitHub <ArrowUpRight className="w-3 h-3" />
-                </a>
-                <a
-                  href={personalInfo.linkedinUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 hover:text-zinc-900"
-                >
-                  <Linkedin className="w-4 h-4" /> LinkedIn <ArrowUpRight className="w-3 h-3" />
-                </a>
-              </div>
-              <span>{personalInfo.location}</span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', px: 1 }}>
+          <Stack direction="row" spacing={1.5}>
+            <Button
+              component="a"
+              href={personalInfo.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              startIcon={<GitHubIcon />}
+              endIcon={<OpenInNewIcon sx={{ fontSize: 12 }} />}
+              sx={{ fontSize: '0.75rem', color: 'text.secondary' }}
+            >
+              GitHub
+            </Button>
+            <Button
+              component="a"
+              href={personalInfo.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              startIcon={<LinkedInIcon />}
+              endIcon={<OpenInNewIcon sx={{ fontSize: 12 }} />}
+              sx={{ fontSize: '0.75rem', color: 'text.secondary' }}
+            >
+              LinkedIn
+            </Button>
+          </Stack>
+          <Typography variant="caption" color="text.secondary">
+            {personalInfo.location}
+          </Typography>
+        </Stack>
+      </Drawer>
+    </AppBar>
   );
 };

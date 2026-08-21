@@ -1,5 +1,18 @@
 import { personalInfo } from '../data/portfolioData';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+} from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 interface FooterProps {
   onOpenResume: () => void;
@@ -11,60 +24,93 @@ export const Footer = ({ onOpenResume }: FooterProps) => {
   };
 
   return (
-    <footer className="border-t border-zinc-200 bg-white py-12 px-4 sm:px-6">
-      <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500">
-        <div className="space-y-1 text-center sm:text-left">
-          <div className="font-bold text-zinc-900 font-heading">
-            {personalInfo.name} — {personalInfo.roleTitle}
-          </div>
-          <div className="text-zinc-500">
-            Based in {personalInfo.location} · Available worldwide for remote work
-          </div>
-        </div>
+    <Box
+      component="footer"
+      sx={{
+        borderTop: '1px solid #e4e4e7',
+        bgcolor: '#ffffff',
+        py: 6,
+        px: { xs: 2, sm: 3 },
+      }}
+    >
+      <Container maxWidth="md">
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={3}
+          sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}
+        >
+          <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+              {personalInfo.name} — {personalInfo.roleTitle}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Based in {personalInfo.location} · Available worldwide for remote engineering roles
+            </Typography>
+          </Box>
 
-        <div className="flex items-center gap-2.5 flex-wrap justify-center">
-          <a
-            href={personalInfo.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub Profile"
-            className="p-2 rounded-full bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 transition-all"
-          >
-            <Github className="w-4 h-4" />
-          </a>
-          <a
-            href={personalInfo.linkedinUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="LinkedIn Profile"
-            className="p-2 rounded-full bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 transition-all"
-          >
-            <Linkedin className="w-4 h-4" />
-          </a>
-          <a
-            href={`mailto:${personalInfo.email}`}
-            aria-label="Email Cleven"
-            className="p-2 rounded-full bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 transition-all"
-          >
-            <Mail className="w-4 h-4" />
-          </a>
-          <button
-            onClick={onOpenResume}
-            className="px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 hover:border-zinc-300 text-zinc-800 text-xs font-mono font-medium transition-all"
-          >
-            Resume (PDF)
-          </button>
-          <button
-            onClick={scrollToTop}
-            id="footer-back-to-top-btn"
-            title="Back to top"
-            aria-label="Back to top"
-            className="p-2 rounded-full bg-zinc-900 border border-zinc-800 text-white hover:bg-zinc-800 transition-all ml-1 cursor-pointer"
-          >
-            <ArrowUp className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-    </footer>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <IconButton
+              component="a"
+              href={personalInfo.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              sx={{ border: '1px solid #e4e4e7' }}
+              aria-label="GitHub Profile"
+            >
+              <GitHubIcon fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              component="a"
+              href={personalInfo.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              sx={{ border: '1px solid #e4e4e7' }}
+              aria-label="LinkedIn Profile"
+            >
+              <LinkedInIcon fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              component="a"
+              href={`mailto:${personalInfo.email}`}
+              size="small"
+              sx={{ border: '1px solid #e4e4e7' }}
+              aria-label="Email Cleven"
+            >
+              <EmailOutlinedIcon fontSize="small" />
+            </IconButton>
+
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={onOpenResume}
+              startIcon={<DescriptionIcon sx={{ fontSize: 14 }} />}
+              sx={{ fontSize: '0.75rem', py: 0.5, px: 1.5 }}
+            >
+              Resume
+            </Button>
+
+            <Tooltip title="Back to top">
+              <IconButton
+                onClick={scrollToTop}
+                id="footer-back-to-top-btn"
+                size="small"
+                sx={{
+                  bgcolor: 'secondary.main',
+                  color: 'secondary.contrastText',
+                  '&:hover': { bgcolor: 'secondary.light' },
+                }}
+                aria-label="Back to top"
+              >
+                <KeyboardArrowUpIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Stack>
+      </Container>
+    </Box>
   );
 };

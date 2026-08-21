@@ -1,5 +1,18 @@
 import { EducationItem } from '../types';
-import { GraduationCap, Calendar, MapPin, BookOpen } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+  Divider,
+} from '@mui/material';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import { motion } from 'motion/react';
 
 interface EducationSectionProps {
@@ -8,29 +21,36 @@ interface EducationSectionProps {
 
 export const EducationSection = ({ education }: EducationSectionProps) => {
   return (
-    <section id="education" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
+    <Container maxWidth="md" id="education" component="section" sx={{ py: 8 }}>
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <GraduationCap className="w-3.5 h-3.5" />
-          Academic Foundation
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Education
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Formal training in computer science, system architectures, and software engineering.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <SchoolOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Academic Foundation
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Education
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Formal training in computer science, system architectures, and software engineering.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Single Column Degree Card */}
-      <div className="space-y-4">
+      {/* Education Cards */}
+      <Stack spacing={3}>
         {education.map((item, idx) => (
           <motion.div
             key={item.degree}
@@ -38,32 +58,65 @@ export const EducationSection = ({ education }: EducationSectionProps) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            id={`edu-item-${idx}`}
-            className="p-6 rounded-2xl bg-white border border-zinc-200 shadow-xs space-y-4"
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-              <div>
-                <h3 className="text-xl font-bold text-zinc-900 font-heading">
-                  {item.degree}
-                </h3>
-                <div className="text-sm font-semibold text-blue-600 mt-0.5">
-                  {item.institution}
-                </div>
-              </div>
+            <Card
+              variant="outlined"
+              id={`edu-item-${idx}`}
+              sx={{
+                p: { xs: 2.5, sm: 3.5 },
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                '&:hover': {
+                  borderColor: '#d4d4d8',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1.5}
+                  sx={{ justifyContent: 'space-between', alignItems: { sm: 'flex-start' }, mb: 2 }}
+                >
+                  <Box>
+                    <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                      {item.degree}
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                      <AccountBalanceOutlinedIcon color="primary" sx={{ fontSize: 16 }} />
+                      <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 600 }}>
+                        {item.institution}
+                      </Typography>
+                    </Stack>
+                  </Box>
 
-              <div className="inline-flex items-center gap-1 text-xs font-mono text-zinc-500 bg-zinc-100 px-2.5 py-1 rounded-full border border-zinc-200 shrink-0 self-start sm:self-auto">
-                <Calendar className="w-3 h-3 text-zinc-400" />
-                {item.period}
-              </div>
-            </div>
+                  <Chip
+                    icon={<CalendarMonthIcon sx={{ fontSize: '14px !important' }} />}
+                    label={item.period}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      fontSize: '0.75rem',
+                      fontFamily: 'monospace',
+                      color: 'text.secondary',
+                      borderColor: '#e4e4e7',
+                      alignSelf: { xs: 'flex-start', sm: 'auto' },
+                    }}
+                  />
+                </Stack>
 
-            <div className="pt-2 border-t border-zinc-100 text-sm text-zinc-600 leading-relaxed flex items-start gap-2">
-              <BookOpen className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-              <span>{item.details}</span>
-            </div>
+                <Divider sx={{ my: 2 }} />
+
+                <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+                  <MenuBookOutlinedIcon color="primary" sx={{ fontSize: 18, mt: 0.25, shrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                    {item.details}
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </Stack>
+    </Container>
   );
 };

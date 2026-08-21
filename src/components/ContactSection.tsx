@@ -1,6 +1,27 @@
 import { useState, FormEvent } from 'react';
 import { personalInfo } from '../data/portfolioData';
-import { Mail, MapPin, Github, Linkedin, Send, Copy, Check, MessageSquare, ArrowUpRight } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Alert,
+} from '@mui/material';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
+import SendIcon from '@mui/icons-material/Send';
+import NorthEastIcon from '@mui/icons-material/NorthEast';
 import { motion } from 'motion/react';
 
 export const ContactSection = () => {
@@ -26,165 +47,312 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
-      {/* Header */}
+    <Container maxWidth="md" id="contact" component="section" sx={{ py: 8 }}>
+      {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200 text-left"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <MessageSquare className="w-3.5 h-3.5" />
-          Get In Touch
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Contact & Collaboration
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Open for full-stack, frontend, and UI/UX developer roles, consulting on internal operations, or contract engineering projects.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <ChatBubbleOutlineOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Get In Touch
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Contact & Collaboration
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Open for full-stack, frontend, and UI/UX developer roles, consulting on internal operations, or contract engineering projects.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Single Column Sequential Flow */}
+      {/* Content Stack */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="space-y-6"
       >
-        {/* Direct Contact Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Email with 1-click copy */}
-          <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 overflow-hidden">
-              <div className="p-2 rounded-xl bg-blue-50 text-blue-600 shrink-0">
-                <Mail className="w-4 h-4" />
-              </div>
-              <div className="overflow-hidden">
-                <div className="text-[11px] text-zinc-500 font-medium">Direct Email</div>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="font-semibold text-zinc-900 hover:text-blue-600 text-xs font-mono truncate block"
+        <Stack spacing={3}>
+          {/* Direct Info Grid */}
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+            {/* Email Card */}
+            <Card
+              variant="outlined"
+              sx={{
+                p: 2,
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', overflow: 'hidden' }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(37, 99, 235, 0.08)',
+                    color: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                 >
-                  {personalInfo.email}
-                </a>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={copyEmail}
-              id="contact-copy-email-btn"
-              className="p-1.5 hover:bg-zinc-100 rounded-lg text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer shrink-0"
-              title="Copy email"
+                  <EmailOutlinedIcon fontSize="small" />
+                </Box>
+                <Box sx={{ overflow: 'hidden' }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
+                    Direct Email
+                  </Typography>
+                  <Typography
+                    component="a"
+                    href={`mailto:${personalInfo.email}`}
+                    variant="subtitle2"
+                    sx={{
+                      fontFamily: 'monospace',
+                      fontWeight: 600,
+                      color: 'text.primary',
+                      textDecoration: 'none',
+                      display: 'block',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      '&:hover': { color: 'primary.main' },
+                    }}
+                  >
+                    {personalInfo.email}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Tooltip title={copied ? 'Copied!' : 'Copy Email'}>
+                <IconButton size="small" onClick={copyEmail} id="contact-copy-email-btn" sx={{ ml: 1 }}>
+                  {copied ? (
+                    <CheckIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                  ) : (
+                    <ContentCopyIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </Card>
+
+            {/* Location Card */}
+            <Card
+              variant="outlined"
+              sx={{
+                p: 2,
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+              }}
             >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-600" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-            </button>
-          </div>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(244, 244, 245, 1)',
+                    color: 'text.primary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <LocationOnOutlinedIcon fontSize="small" />
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
+                    Location
+                  </Typography>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                    {personalInfo.location}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Card>
+          </Box>
 
-          {/* Location */}
-          <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-zinc-100 text-zinc-700 shrink-0">
-              <MapPin className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="text-[11px] text-zinc-500 font-medium">Location</div>
-              <div className="font-semibold text-zinc-900 text-xs">{personalInfo.location}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Social Links */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <a
-            href={personalInfo.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-between p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 transition-colors group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-zinc-100 text-zinc-900">
-                <Github className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="text-[11px] text-zinc-500 font-medium">GitHub</div>
-                <span className="font-mono text-xs font-semibold text-zinc-900">{personalInfo.githubHandle}</span>
-              </div>
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-900 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-
-          <a
-            href={personalInfo.linkedinUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-between p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:border-zinc-300 text-zinc-700 hover:text-zinc-950 transition-colors group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
-                <Linkedin className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="text-[11px] text-zinc-500 font-medium">LinkedIn</div>
-                <span className="font-mono text-xs font-semibold text-zinc-900">{personalInfo.linkedinHandle}</span>
-              </div>
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-900 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-        </div>
-
-        {/* Message Composer Card */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-zinc-200 shadow-xs space-y-4">
-          <form onSubmit={handleSendEmail} className="space-y-4 text-xs">
-            <div className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 pb-2 border-b border-zinc-100">
-              Quick Email Composer
-            </div>
-
-            <div>
-              <label className="block text-zinc-600 mb-1 font-mono text-[11px] font-medium">Subject</label>
-              <input
-                type="text"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                placeholder="e.g. Full Stack Developer Role / Project Inquiry"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all text-xs"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-zinc-600 mb-1 font-mono text-[11px] font-medium">Message</label>
-              <textarea
-                rows={4}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Hi Cleven, I saw your work on EnvX and Mangi Store and would love to connect..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all text-xs resize-none"
-                required
-              />
-            </div>
-
-            {statusMessage && (
-              <div className="text-xs text-emerald-600 font-mono">{statusMessage}</div>
-            )}
-
-            <button
-              type="submit"
-              id="contact-send-email-submit"
-              className="w-full py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+          {/* Social Profiles Grid */}
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+            <Card
+              variant="outlined"
+              component="a"
+              href={personalInfo.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              sx={{
+                p: 2,
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                '&:hover': {
+                  borderColor: '#a1a1aa',
+                },
+              }}
             >
-              <Send className="w-3.5 h-3.5" />
-              Compose Email in Client
-            </button>
-          </form>
-        </div>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(244, 244, 245, 1)',
+                    color: 'text.primary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <GitHubIcon fontSize="small" />
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
+                    GitHub Profile
+                  </Typography>
+                  <Typography variant="subtitle2" sx={{ fontFamily: 'monospace', fontWeight: 600, color: 'text.primary' }}>
+                    {personalInfo.githubHandle}
+                  </Typography>
+                </Box>
+              </Stack>
+              <NorthEastIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+            </Card>
+
+            <Card
+              variant="outlined"
+              component="a"
+              href={personalInfo.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              sx={{
+                p: 2,
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                '&:hover': {
+                  borderColor: '#a1a1aa',
+                },
+              }}
+            >
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(37, 99, 235, 0.08)',
+                    color: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <LinkedInIcon fontSize="small" />
+                </Box>
+                <Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontSize: '0.7rem' }}>
+                    LinkedIn Network
+                  </Typography>
+                  <Typography variant="subtitle2" sx={{ fontFamily: 'monospace', fontWeight: 600, color: 'text.primary' }}>
+                    {personalInfo.linkedinHandle}
+                  </Typography>
+                </Box>
+              </Stack>
+              <NorthEastIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+            </Card>
+          </Box>
+
+          {/* Quick Email Composer Card */}
+          <Card
+            variant="outlined"
+            sx={{
+              p: { xs: 2.5, sm: 3.5 },
+              borderRadius: '8px',
+              bgcolor: '#ffffff',
+            }}
+          >
+            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: 'text.primary',
+                  display: 'block',
+                  mb: 2,
+                  pb: 1,
+                  borderBottom: '1px solid #e4e4e7',
+                }}
+              >
+                Quick Email Composer
+              </Typography>
+
+              <Box component="form" onSubmit={handleSendEmail}>
+                <Stack spacing={2.5}>
+                  <TextField
+                    label="Subject"
+                    fullWidth
+                    size="small"
+                    required
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="e.g. Full Stack Developer Role / Project Inquiry"
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+
+                  <TextField
+                    label="Message"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    size="small"
+                    required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Hi Cleven, I saw your work on EnvX and Mangi Store and would love to connect..."
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+
+                  {statusMessage && (
+                    <Alert severity="success" sx={{ py: 0.5, fontSize: '0.8rem' }}>
+                      {statusMessage}
+                    </Alert>
+                  )}
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    id="contact-send-email-submit"
+                    startIcon={<SendIcon sx={{ fontSize: 16 }} />}
+                    sx={{ py: 1.2 }}
+                  >
+                    Compose Email in Client
+                  </Button>
+                </Stack>
+              </Box>
+            </CardContent>
+          </Card>
+        </Stack>
       </motion.div>
-    </section>
+    </Container>
   );
 };

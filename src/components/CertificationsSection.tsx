@@ -1,5 +1,15 @@
 import { CourseCertification } from '../types';
-import { Award, Calendar, ExternalLink, ShieldCheck, Sparkles } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+} from '@mui/material';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { motion } from 'motion/react';
 
 interface CertificationsSectionProps {
@@ -8,29 +18,36 @@ interface CertificationsSectionProps {
 
 export const CertificationsSection = ({ certifications }: CertificationsSectionProps) => {
   return (
-    <section id="certifications" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
+    <Container maxWidth="md" id="certifications" component="section" sx={{ py: 8 }}>
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <Award className="w-3.5 h-3.5" />
-          Continuous Learning
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Certifications & Specializations
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Industry courses in full-stack engineering, human-centered UI/UX design, and AI model workflows.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <WorkspacePremiumOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Continuous Learning
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Certifications & Specializations
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Industry courses in full-stack engineering, human-centered UI/UX design, and AI model workflows.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Single Column Sequential List */}
-      <div className="space-y-4">
+      {/* Certifications List */}
+      <Stack spacing={2.5}>
         {certifications.map((cert, idx) => (
           <motion.div
             key={cert.title}
@@ -38,33 +55,74 @@ export const CertificationsSection = ({ certifications }: CertificationsSectionP
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            id={`cert-item-${idx}`}
-            className="p-5 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
           >
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-blue-50 border border-blue-200/60 text-blue-600 shrink-0 mt-0.5">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm sm:text-base font-bold text-zinc-900 font-heading leading-snug">
-                  {cert.title}
-                </h3>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-                  <span className="font-semibold text-zinc-700">{cert.issuer}</span>
-                  <span>•</span>
-                  <span className="font-mono">{cert.year}</span>
-                </div>
-              </div>
-            </div>
+            <Card
+              variant="outlined"
+              id={`cert-item-${idx}`}
+              sx={{
+                p: { xs: 2, sm: 2.5 },
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                '&:hover': {
+                  borderColor: '#d4d4d8',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={2}
+                  sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}
+                >
+                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+                    <Box
+                      sx={{
+                        p: 1,
+                        borderRadius: 2,
+                        bgcolor: 'rgba(37, 99, 235, 0.08)',
+                        color: 'primary.main',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mt: 0.25,
+                      }}
+                    >
+                      <VerifiedOutlinedIcon fontSize="small" />
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, lineHeight: 1.3, color: 'text.primary' }}>
+                        {cert.title}
+                      </Typography>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 0.5 }}>
+                        <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                          {cert.issuer}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">•</Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+                          {cert.year}
+                        </Typography>
+                      </Stack>
+                    </Box>
+                  </Stack>
 
-            <div className="self-start sm:self-center">
-              <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 border border-zinc-200">
-                {cert.category}
-              </span>
-            </div>
+                  <Chip
+                    label={cert.category}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      fontSize: '0.7rem',
+                      fontFamily: 'monospace',
+                      color: 'text.secondary',
+                      borderColor: '#e4e4e7',
+                      alignSelf: { xs: 'flex-start', sm: 'center' },
+                    }}
+                  />
+                </Stack>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </Stack>
+    </Container>
   );
 };

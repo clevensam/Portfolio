@@ -1,6 +1,22 @@
 import { useState } from 'react';
 import { personalInfo, experienceData, skillCategories, educationData, courseCertifications } from '../data/portfolioData';
-import { X, Printer, Copy, Check, MapPin } from 'lucide-react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Typography,
+  Button,
+  IconButton,
+  Card,
+  CardContent,
+  Stack,
+  Box,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import PrintIcon from '@mui/icons-material/Print';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,8 +25,6 @@ interface ResumeModalProps {
 
 export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
   const [copied, setCopied] = useState(false);
-
-  if (!isOpen) return null;
 
   const handlePrint = () => {
     window.print();
@@ -53,185 +67,250 @@ ${courseCertifications.map((c) => `• ${c.title} (${c.issuer}, ${c.year})`).joi
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-zinc-950/60 backdrop-blur-sm overflow-y-auto">
-      <div
-        className="relative w-full max-w-3xl max-h-[92vh] bg-white border border-zinc-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
-        role="dialog"
-        aria-modal="true"
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      scroll="paper"
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: '8px',
+            border: '1px solid #e4e4e7',
+            maxHeight: '90vh',
+          },
+        },
+      }}
+    >
+      {/* Dialog Header Bar */}
+      <DialogTitle
+        sx={{
+          p: 2.5,
+          borderBottom: '1px solid #e4e4e7',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          bgcolor: '#ffffff',
+        }}
+        className="no-print"
       >
-        {/* Modal Controls Header */}
-        <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 bg-white/95 border-b border-zinc-200 backdrop-blur-md no-print">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-600" />
-              Resume Document Preview
-            </span>
-          </div>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'primary.main' }} />
+          <Typography variant="subtitle2" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            Resume Document Preview
+          </Typography>
+        </Stack>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleCopyText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-zinc-700 hover:text-zinc-950 bg-zinc-100 hover:bg-zinc-200 rounded-full border border-zinc-200 transition-colors cursor-pointer"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  Copied Text!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5" />
-                  Copy Text
-                </>
-              )}
-            </button>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleCopyText}
+            startIcon={copied ? <CheckIcon sx={{ color: 'success.main' }} /> : <ContentCopyIcon />}
+            sx={{ fontSize: '0.75rem', py: 0.5 }}
+          >
+            {copied ? 'Copied Text!' : 'Copy Text'}
+          </Button>
 
-            <button
-              onClick={handlePrint}
-              id="resume-modal-print-btn"
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-full transition-colors shadow-xs cursor-pointer"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              Print / Save PDF
-            </button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            id="resume-modal-print-btn"
+            onClick={handlePrint}
+            startIcon={<PrintIcon />}
+            sx={{ fontSize: '0.75rem', py: 0.5 }}
+          >
+            Print / Save PDF
+          </Button>
 
-            <button
-              onClick={onClose}
-              id="resume-modal-close-btn"
-              className="p-1.5 text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 rounded-full border border-zinc-200 transition-colors cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+          <IconButton size="small" onClick={onClose} id="resume-modal-close-btn" aria-label="Close Resume">
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Stack>
+      </DialogTitle>
 
-        {/* Printable Resume Canvas */}
-        <div className="p-6 sm:p-10 overflow-y-auto bg-white text-zinc-900 space-y-6 font-sans">
+      {/* Printable Resume Content */}
+      <DialogContent sx={{ p: { xs: 3, sm: 5 }, bgcolor: '#ffffff' }}>
+        <Stack spacing={4}>
           {/* Header */}
-          <div className="border-b border-zinc-200 pb-5 space-y-2">
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 font-heading tracking-tight">
+          <Box sx={{ borderBottom: '1px solid #e4e4e7', pb: 3 }}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              sx={{ justifyContent: 'space-between', alignItems: { sm: 'baseline' }, mb: 1.5 }}
+            >
+              <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary' }}>
                 {personalInfo.name}
-              </h1>
-              <div className="text-sm font-semibold text-blue-600 font-mono">
+              </Typography>
+              <Typography variant="subtitle2" color="primary.main" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>
                 {personalInfo.roleTitle}
-              </div>
-            </div>
+              </Typography>
+            </Stack>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-500 font-mono">
-              <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-blue-600" /> {personalInfo.location}
-              </span>
-              <span>•</span>
-              <a href={`mailto:${personalInfo.email}`} className="text-zinc-700 hover:underline">
+            <Stack
+              direction="row"
+              sx={{ flexWrap: 'wrap', alignItems: 'center', gap: 1.5, color: 'text.secondary', fontFamily: 'monospace', fontSize: '0.75rem' }}
+            >
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                <LocationOnOutlinedIcon sx={{ fontSize: 14, color: 'primary.main' }} />
+                <Typography variant="caption">{personalInfo.location}</Typography>
+              </Stack>
+              <Typography variant="caption">•</Typography>
+              <Typography
+                component="a"
+                href={`mailto:${personalInfo.email}`}
+                variant="caption"
+                sx={{ color: 'text.primary', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+              >
                 {personalInfo.email}
-              </a>
-              <span>•</span>
-              <a href={personalInfo.githubUrl} target="_blank" rel="noreferrer" className="text-zinc-700 hover:underline">
+              </Typography>
+              <Typography variant="caption">•</Typography>
+              <Typography
+                component="a"
+                href={personalInfo.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                variant="caption"
+                sx={{ color: 'text.primary', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+              >
                 {personalInfo.githubHandle}
-              </a>
-              <span>•</span>
-              <a href={personalInfo.linkedinUrl} target="_blank" rel="noreferrer" className="text-zinc-700 hover:underline">
+              </Typography>
+              <Typography variant="caption">•</Typography>
+              <Typography
+                component="a"
+                href={personalInfo.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                variant="caption"
+                sx={{ color: 'text.primary', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+              >
                 {personalInfo.linkedinHandle}
-              </a>
-            </div>
-          </div>
+              </Typography>
+            </Stack>
+          </Box>
 
           {/* Executive Summary */}
-          <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-blue-600 mb-1.5">
-              Summary & Value Proposition
-            </h2>
-            <p className="text-sm text-zinc-700 leading-relaxed">
-              {personalInfo.valueProp}
-            </p>
-          </div>
+          <Card variant="outlined" sx={{ p: 2.5, borderRadius: '8px', bgcolor: 'rgba(244, 244, 245, 0.5)' }}>
+            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+              <Typography variant="caption" color="primary" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', mb: 1 }}>
+                Summary & Value Proposition
+              </Typography>
+              <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.6 }}>
+                {personalInfo.valueProp}
+              </Typography>
+            </CardContent>
+          </Card>
 
           {/* Experience */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 pb-1 border-b border-zinc-200">
+          <Box>
+            <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'text.primary', display: 'block', mb: 2, pb: 1, borderBottom: '1px solid #e4e4e7' }}>
               Work Experience & Internships
-            </h2>
+            </Typography>
 
-            <div className="space-y-3">
+            <Stack spacing={2.5}>
               {experienceData.map((exp) => (
-                <div key={exp.id} className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between">
-                    <div className="text-sm font-bold text-zinc-900 font-heading">
-                      {exp.title}{' '}
-                      <span className="font-normal text-zinc-600 text-xs">
-                        — {exp.organization}
-                      </span>
-                    </div>
-                    <div className="text-xs font-mono text-zinc-500">
-                      {exp.period} | {exp.location}
-                    </div>
-                  </div>
+                <Card key={exp.id} variant="outlined" sx={{ p: 2.5, borderRadius: '8px', bgcolor: 'rgba(250, 250, 250, 0.7)' }}>
+                  <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={0.5}
+                      sx={{ justifyContent: 'space-between', alignItems: { sm: 'baseline' }, mb: 1 }}
+                    >
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                        {exp.title} <span style={{ fontWeight: 400, color: '#71717a', fontSize: '0.85rem' }}>— {exp.organization}</span>
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+                        {exp.period} | {exp.location}
+                      </Typography>
+                    </Stack>
 
-                  <div className="text-xs font-mono text-emerald-700 font-medium">
-                    Verified Outcome: {exp.metrics}
-                  </div>
+                    <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 600, color: 'success.dark', display: 'block', mb: 1 }}>
+                      Verified Outcome: {exp.metrics}
+                    </Typography>
 
-                  <ul className="space-y-1 text-xs text-zinc-600 list-disc pl-4 pt-0.5">
-                    {exp.bullets.map((b, idx) => (
-                      <li key={idx}>{b}</li>
-                    ))}
-                  </ul>
+                    <Box component="ul" sx={{ pl: 2.5, m: 0, mb: 1.5, '& li': { fontSize: '0.8rem', color: 'text.secondary', lineHeight: 1.6 } }}>
+                      {exp.bullets.map((b, idx) => (
+                        <li key={idx}>{b}</li>
+                      ))}
+                    </Box>
 
-                  <div className="text-[11px] font-mono text-zinc-500 pt-1 border-t border-zinc-200/60">
-                    Tech: {exp.technologies.join(', ')}
-                  </div>
-                </div>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace', display: 'block', pt: 1, borderTop: '1px solid #e4e4e7' }}>
+                      Applied Tech: {exp.technologies.join(', ')}
+                    </Typography>
+                  </CardContent>
+                </Card>
               ))}
-            </div>
-          </div>
+            </Stack>
+          </Box>
 
           {/* Technical Skills */}
-          <div className="space-y-2">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 pb-1 border-b border-zinc-200">
+          <Box>
+            <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'text.primary', display: 'block', mb: 2, pb: 1, borderBottom: '1px solid #e4e4e7' }}>
               Technical Skills
-            </h2>
-            <div className="space-y-2 text-xs">
+            </Typography>
+            <Stack spacing={1.5}>
               {skillCategories.map((cat) => (
-                <div key={cat.title} className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-                  <span className="font-bold text-zinc-900 shrink-0 w-32">{cat.title}:</span>
-                  <span className="text-zinc-600 font-mono">{cat.skills.join(', ')}</span>
-                </div>
+                <Card key={cat.title} variant="outlined" sx={{ p: 1.5, borderRadius: '8px', bgcolor: 'rgba(250, 250, 250, 0.7)' }}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ alignItems: { sm: 'baseline' } }}>
+                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', minWidth: 140 }}>
+                      {cat.title}:
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+                      {cat.skills.join(', ')}
+                    </Typography>
+                  </Stack>
+                </Card>
               ))}
-            </div>
-          </div>
+            </Stack>
+          </Box>
 
           {/* Education & Certs */}
-          <div className="space-y-4 pt-1">
-            <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-blue-600 pb-1 border-b border-zinc-200">
-                Education
-              </h2>
-              {educationData.map((edu) => (
-                <div key={edu.degree} className="text-xs space-y-0.5">
-                  <div className="font-bold text-zinc-900 font-heading">{edu.degree}</div>
-                  <div className="text-zinc-600">{edu.institution}</div>
-                  <div className="text-zinc-500 font-mono">{edu.period}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
-              <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 pb-1 border-b border-zinc-200">
-                Certifications & Specializations
-              </h2>
-              <ul className="text-xs text-zinc-700 space-y-1.5">
-                {courseCertifications.map((c) => (
-                  <li key={c.title} className="flex justify-between text-[11px]">
-                    <span>{c.title}</span>
-                    <span className="text-zinc-500 font-mono">{c.issuer} ({c.year})</span>
-                  </li>
+          <Stack spacing={3}>
+            <Card variant="outlined" sx={{ p: 2.5, borderRadius: '8px', bgcolor: 'rgba(244, 244, 245, 0.5)' }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Typography variant="caption" color="primary" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', mb: 1.5, pb: 0.5, borderBottom: '1px solid #e4e4e7' }}>
+                  Education
+                </Typography>
+                {educationData.map((edu) => (
+                  <Box key={edu.degree} sx={{ mb: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                      {edu.degree}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                      {edu.institution}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+                      {edu.period}
+                    </Typography>
+                  </Box>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </CardContent>
+            </Card>
+
+            <Card variant="outlined" sx={{ p: 2.5, borderRadius: '8px', bgcolor: 'rgba(244, 244, 245, 0.5)' }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#d97706', display: 'block', mb: 1.5, pb: 0.5, borderBottom: '1px solid #e4e4e7' }}>
+                  Certifications & Specializations
+                </Typography>
+                <Stack spacing={1}>
+                  {courseCertifications.map((c) => (
+                    <Stack key={c.title} direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="caption" color="text.primary" sx={{ fontWeight: 500 }}>
+                        {c.title}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>
+                        {c.issuer} ({c.year})
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Stack>
+      </DialogContent>
+    </Dialog>
   );
 };

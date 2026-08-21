@@ -14,6 +14,7 @@ export const personalInfo = {
   heroBadges: [
     'TypeScript',
     'React.js',
+    '.NET MAUI',
     'Next.js',
     'Node.js',
     'Python',
@@ -248,6 +249,7 @@ export const skillCategories: SkillCategory[] = [
       'TypeScript',
       'React.js',
       'Next.js',
+      '.NET MAUI',
       'Node.js',
       'Python',
       'JavaScript',

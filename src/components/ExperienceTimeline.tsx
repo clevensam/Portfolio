@@ -1,6 +1,21 @@
 import { ExperienceItem } from '../types';
 import { TechIcon } from './TechIcon';
-import { Briefcase, Calendar, MapPin, Sparkles, Building2, CheckCircle2 } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+  Divider,
+} from '@mui/material';
+import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
+import BusinessIcon from '@mui/icons-material/Business';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { motion } from 'motion/react';
 
 interface ExperienceTimelineProps {
@@ -9,108 +24,167 @@ interface ExperienceTimelineProps {
 
 export const ExperienceTimeline = ({ items }: ExperienceTimelineProps) => {
   return (
-    <section id="experience" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
+    <Container maxWidth="md" id="experience" component="section" sx={{ py: 8 }}>
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <Briefcase className="w-3.5 h-3.5" />
-          Track Record
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Work Experience
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Hands-on software development internships and enterprise industrial training.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <WorkHistoryOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Track Record
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Work Experience
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Hands-on software development internships and enterprise industrial training.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Continuous Open Timeline */}
-      <div className="relative pl-6 sm:pl-8 space-y-12 before:absolute before:left-[11px] sm:before:left-[15px] before:top-2 before:bottom-2 before:w-[2px] before:bg-zinc-200">
+      {/* Sequential Card Stack for Experience */}
+      <Stack spacing={4}>
         {items.map((item, idx) => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, x: -16 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="relative group space-y-3.5"
+            transition={{ duration: 0.4, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Timeline Node Point */}
-            <div className="absolute -left-[30px] sm:-left-[34px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-blue-600 shadow-xs" />
+            <Card
+              variant="outlined"
+              sx={{
+                p: { xs: 2.5, sm: 3.5 },
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                '&:hover': {
+                  borderColor: 'primary.light',
+                  boxShadow: '0 8px 24px -4px rgba(0,0,0,0.06)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                {/* Header Information */}
+                <Box sx={{ mb: 2 }}>
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={1}
+                    sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' }, mb: 0.5 }}
+                  >
+                    <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                      {item.title}
+                    </Typography>
+                    <Chip
+                      label={item.roleType}
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      sx={{
+                        fontSize: '0.7rem',
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                        bgcolor: 'rgba(37, 99, 235, 0.04)',
+                        alignSelf: { xs: 'flex-start', sm: 'center' },
+                      }}
+                    />
+                  </Stack>
 
-            {/* Role Header Info */}
-            <div className="space-y-1">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="text-lg sm:text-xl font-bold text-zinc-900 font-heading">
-                  {item.title}
-                </h3>
-                <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">
-                  {item.roleType}
-                </span>
-              </div>
+                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+                    <BusinessIcon color="primary" sx={{ fontSize: 16 }} />
+                    <Typography variant="subtitle2" color="primary.main" sx={{ fontWeight: 600 }}>
+                      {item.organization}
+                    </Typography>
+                  </Stack>
 
-              <div className="text-sm font-semibold text-blue-600 flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5" />
-                {item.organization}
-              </div>
+                  <Stack
+                    direction="row"
+                    sx={{ flexWrap: 'wrap', alignItems: 'center', gap: 2, color: 'text.secondary', fontSize: '0.75rem', fontFamily: 'monospace' }}
+                  >
+                    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                      <CalendarMonthIcon sx={{ fontSize: 14 }} />
+                      <Typography variant="caption">{item.period}</Typography>
+                    </Stack>
+                    <Typography variant="caption">•</Typography>
+                    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                      <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                      <Typography variant="caption">{item.location}</Typography>
+                    </Stack>
+                  </Stack>
+                </Box>
 
-              <div className="flex items-center gap-3 text-xs font-mono text-zinc-500 flex-wrap pt-0.5">
-                <span className="inline-flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-zinc-400" />
-                  {item.period}
-                </span>
-                <span>•</span>
-                <span className="inline-flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-                  {item.location}
-                </span>
-              </div>
-            </div>
-
-            {/* Verified Outcome Metric Banner */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-mono text-zinc-700">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="text-zinc-500">Key Focus:</span>
-              <span className="text-zinc-900 font-semibold">{item.metrics}</span>
-            </div>
-
-            {/* Role Responsibilities Bullets */}
-            <ul className="space-y-2 text-sm text-zinc-600 leading-relaxed pt-1">
-              {item.bullets.map((bullet, i) => (
-                <li key={i} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Technology Stack with Specific Icons */}
-            <div className="pt-2 flex flex-wrap items-center gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 mr-1">
-                Applied Tech:
-              </span>
-              {item.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full bg-white text-zinc-700 border border-zinc-200 shadow-2xs hover:border-zinc-300 transition-colors"
+                {/* Key Focus Highlight Box */}
+                <Card
+                  variant="outlined"
+                  sx={{
+                    bgcolor: 'rgba(244, 244, 245, 0.6)',
+                    borderColor: '#e4e4e7',
+                    borderRadius: '8px',
+                    p: 1.5,
+                    mb: 2.5,
+                  }}
                 >
-                  <TechIcon name={tech} className="w-3 h-3" />
-                  <span>{tech}</span>
-                </span>
-              ))}
-            </div>
+                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                    <AutoAwesomeIcon sx={{ fontSize: 16, color: 'success.main' }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Key Focus:
+                    </Typography>
+                    <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                      {item.metrics}
+                    </Typography>
+                  </Stack>
+                </Card>
 
-            {/* Bottom subtle divider line */}
-            <div className="pt-6 border-b border-zinc-100" />
+                {/* Bullet Points */}
+                <Stack spacing={1.5} sx={{ mb: 2.5 }}>
+                  {item.bullets.map((bullet, i) => (
+                    <Stack key={i} direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+                      <CheckCircleOutlinedIcon color="primary" sx={{ fontSize: 18, mt: 0.2, shrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                        {bullet}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+
+                <Divider sx={{ my: 2 }} />
+
+                {/* Applied Technologies */}
+                <Stack direction="row" sx={{ flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="caption" sx={{ fontFamily: 'monospace', textTransform: 'uppercase', color: 'text.secondary', fontWeight: 600, mr: 0.5 }}>
+                    Applied Tech:
+                  </Typography>
+                  {item.technologies.map((tech) => (
+                    <Chip
+                      key={tech}
+                      size="small"
+                      variant="outlined"
+                      icon={<TechIcon name={tech} className="w-3 h-3" />}
+                      label={tech}
+                      sx={{
+                        fontSize: '0.7rem',
+                        fontFamily: 'monospace',
+                        bgcolor: 'rgba(244, 244, 245, 0.5)',
+                        borderColor: '#e4e4e7',
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </Stack>
+    </Container>
   );
 };

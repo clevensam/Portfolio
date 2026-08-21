@@ -1,7 +1,26 @@
 import { useState } from 'react';
 import { personalInfo } from '../data/portfolioData';
 import { TechIcon } from './TechIcon';
-import { ArrowRight, Download, MapPin, Mail, Github, Linkedin, Copy, Check, Briefcase, Sparkles } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Chip,
+  Stack,
+  Card,
+  IconButton,
+  Tooltip,
+  Divider,
+} from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
+import DownloadIcon from '@mui/icons-material/Download';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { motion } from 'motion/react';
 
 interface HeroProps {
@@ -18,128 +37,219 @@ export const Hero = ({ onOpenResume }: HeroProps) => {
   };
 
   return (
-    <section id="hero" className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
-      {/* Background Subtle Gradient & Grid */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-100/60 blur-[100px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f080_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f080_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none -z-10" />
+    <Box
+      id="hero"
+      component="section"
+      sx={{
+        pt: { xs: 14, sm: 18, md: 22 },
+        pb: { xs: 8, md: 10 },
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Background Decorative Blur & Grid */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 40,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: { xs: 300, sm: 500, md: 650 },
+          height: 250,
+          bgcolor: 'rgba(219, 234, 254, 0.6)',
+          filter: 'blur(80px)',
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: -1,
+        }}
+      />
 
-      {/* Single Column Information Architecture */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <Container maxWidth="md">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-6 text-left"
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Main Title & Role */}
-          <div className="space-y-2">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-zinc-900 font-heading leading-[1.1]">
-              {personalInfo.name}
-            </h1>
-            <p className="text-lg sm:text-xl font-medium text-blue-600">
-              {personalInfo.roleTitle}
-            </p>
-          </div>
-
-          {/* Value Prop */}
-          <p className="text-base sm:text-lg text-zinc-600 font-normal leading-relaxed">
-            {personalInfo.valueProp}
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <a
-              href="#projects"
-              id="hero-view-work-cta"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-900 text-white font-medium text-xs hover:bg-zinc-800 hover:shadow-xs active:scale-98 transition-all"
-            >
-              Explore Projects
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-
-            <a
-              href="#experience"
-              id="hero-view-experience-cta"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200 font-medium text-xs shadow-xs transition-all"
-            >
-              <Briefcase className="w-3.5 h-3.5 text-blue-600" />
-              Work Experience
-            </a>
-
-            <button
-              onClick={onOpenResume}
-              id="hero-resume-pdf-cta"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200 font-medium text-xs shadow-xs active:scale-98 transition-all cursor-pointer"
-            >
-              <Download className="w-3.5 h-3.5 text-zinc-600" />
-              Resume (PDF)
-            </button>
-          </div>
-
-          {/* Core Tech Stack */}
-          <div className="pt-6 border-t border-zinc-200 space-y-2.5">
-            <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-zinc-500">
-              Core Technologies
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {personalInfo.heroBadges.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium bg-white text-zinc-700 border border-zinc-200 shadow-xs hover:border-blue-400 hover:text-blue-600 transition-all cursor-default"
-                >
-                  <TechIcon name={tech} className="w-3.5 h-3.5" />
-                  <span>{tech}</span>
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Direct Contact Links */}
-          <div className="pt-3 flex flex-wrap items-center gap-3 text-xs">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-zinc-200 shadow-xs text-zinc-700">
-              <Mail className="w-3.5 h-3.5 text-blue-600" />
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="hover:text-blue-600 font-mono text-[11px]"
+          <Stack spacing={3} sx={{ alignItems: 'flex-start' }}>
+            {/* Main Name & Role */}
+            <Box>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: '2.5rem', sm: '3.25rem', md: '3.75rem' },
+                  color: 'text.primary',
+                  lineHeight: 1.1,
+                  mb: 1,
+                }}
               >
-                {personalInfo.email}
-              </a>
-              <button
-                onClick={copyEmail}
-                id="hero-copy-email-btn"
-                title="Copy email to clipboard"
-                className="p-1 hover:bg-zinc-100 rounded-md text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
+                {personalInfo.name}
+              </Typography>
+              <Typography
+                variant="h5"
+                color="primary.main"
+                sx={{ fontWeight: 600, fontSize: { xs: '1.15rem', sm: '1.35rem' } }}
               >
-                {copied ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5" />
-                )}
-              </button>
-            </div>
+                {personalInfo.roleTitle}
+              </Typography>
+            </Box>
 
-            <a
-              href={personalInfo.githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-zinc-200 shadow-xs text-zinc-600 hover:text-zinc-950 hover:border-zinc-300 transition-colors font-mono text-[11px]"
+            {/* Value Proposition */}
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                fontSize: { xs: '1rem', sm: '1.1rem' },
+                lineHeight: 1.6,
+                maxWidth: 680,
+              }}
             >
-              <Github className="w-3.5 h-3.5 text-zinc-700" />
-              <span>clevensam</span>
-            </a>
+              {personalInfo.valueProp}
+            </Typography>
 
-            <a
-              href={personalInfo.linkedinUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-zinc-200 shadow-xs text-zinc-600 hover:text-zinc-950 hover:border-zinc-300 transition-colors font-mono text-[11px]"
-            >
-              <Linkedin className="w-3.5 h-3.5 text-blue-600" />
-              <span>cleven-samwel</span>
-            </a>
-          </div>
+            {/* Action Buttons */}
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ pt: 1, width: { xs: '100%', sm: 'auto' } }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                href="#projects"
+                id="hero-view-work-cta"
+                endIcon={<ArrowForwardIcon fontSize="small" />}
+                sx={{ px: 3, py: 1.2 }}
+              >
+                Explore Projects
+              </Button>
+
+              <Button
+                variant="outlined"
+                href="#experience"
+                id="hero-view-experience-cta"
+                startIcon={<WorkHistoryOutlinedIcon color="primary" fontSize="small" />}
+                sx={{ px: 2.5, py: 1.2 }}
+              >
+                Work Experience
+              </Button>
+
+              <Button
+                variant="outlined"
+                onClick={onOpenResume}
+                id="hero-resume-pdf-cta"
+                startIcon={<DownloadIcon fontSize="small" />}
+                sx={{ px: 2.5, py: 1.2 }}
+              >
+                Resume (PDF)
+              </Button>
+            </Stack>
+
+            <Divider sx={{ width: '100%', my: 1 }} />
+
+            {/* Core Technologies Badges */}
+            <Box sx={{ width: '100%' }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontFamily: 'monospace',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: 'text.secondary',
+                  display: 'block',
+                  mb: 1.5,
+                }}
+              >
+                Core Technologies
+              </Typography>
+              <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
+                {personalInfo.heroBadges.map((tech) => (
+                  <Chip
+                    key={tech}
+                    variant="outlined"
+                    icon={<TechIcon name={tech} className="w-3.5 h-3.5" />}
+                    label={tech}
+                    sx={{
+                      bgcolor: '#ffffff',
+                      borderColor: '#e4e4e7',
+                      fontSize: '0.75rem',
+                      fontFamily: 'monospace',
+                      py: 0.5,
+                      '&:hover': {
+                        borderColor: 'primary.main',
+                        color: 'primary.main',
+                      },
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+
+            {/* Direct Contact Links */}
+            <Stack direction="row" sx={{ flexWrap: 'wrap', alignItems: 'center', gap: 1.5, pt: 1 }}>
+              {/* Email Chip with Copy Action */}
+              <Card variant="outlined" sx={{ borderRadius: '8px', p: 0.5, display: 'inline-flex', alignItems: 'center' }}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center', px: 1.5, py: 0.25 }}>
+                  <EmailOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+                  <Typography
+                    component="a"
+                    href={`mailto:${personalInfo.email}`}
+                    variant="caption"
+                    sx={{
+                      fontFamily: 'monospace',
+                      fontSize: '0.75rem',
+                      color: 'text.primary',
+                      textDecoration: 'none',
+                      '&:hover': { color: 'primary.main' },
+                    }}
+                  >
+                    {personalInfo.email}
+                  </Typography>
+                  <Tooltip title={copied ? 'Copied!' : 'Copy Email'}>
+                    <IconButton size="small" onClick={copyEmail} sx={{ p: 0.5 }}>
+                      {copied ? (
+                        <CheckIcon sx={{ fontSize: 16, color: 'success.main' }} />
+                      ) : (
+                        <ContentCopyIcon sx={{ fontSize: 15, color: 'text.secondary' }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              </Card>
+
+              {/* GitHub Link */}
+              <Chip
+                component="a"
+                href={personalInfo.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                clickable
+                variant="outlined"
+                icon={<GitHubIcon sx={{ fontSize: 16 }} />}
+                label="clevensam"
+                sx={{
+                  fontFamily: 'monospace',
+                  fontSize: '0.75rem',
+                  bgcolor: '#ffffff',
+                }}
+              />
+
+              {/* LinkedIn Link */}
+              <Chip
+                component="a"
+                href={personalInfo.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                clickable
+                variant="outlined"
+                icon={<LinkedInIcon sx={{ fontSize: 16, color: '#0284c7' }} />}
+                label="cleven-samwel"
+                sx={{
+                  fontFamily: 'monospace',
+                  fontSize: '0.75rem',
+                  bgcolor: '#ffffff',
+                }}
+              />
+            </Stack>
+          </Stack>
         </motion.div>
-      </div>
-    </section>
+      </Container>
+    </Box>
   );
 };

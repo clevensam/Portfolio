@@ -40,6 +40,9 @@ export const TechIcon: React.FC<TechIconProps> = ({ name, className = 'w-4 h-4' 
   const normalized = name.toLowerCase().trim();
 
   // Programming languages & Frontend
+  if (normalized.includes('maui') || normalized.includes('.net') || normalized.includes('c#')) {
+    return <Layers className={`text-indigo-600 ${className}`} />;
+  }
   if (normalized.includes('typescript') || normalized === 'ts') {
     return <span className={`inline-flex items-center justify-center font-bold text-[10px] text-blue-600 ${className}`}>TS</span>;
   }

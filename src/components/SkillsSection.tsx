@@ -1,6 +1,20 @@
 import { SkillCategory } from '../types';
 import { TechIcon } from './TechIcon';
-import { Code2, Database, Terminal, Palette, Sparkles, Cpu } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+} from '@mui/material';
+import MemoryIcon from '@mui/icons-material/Memory';
+import CodeIcon from '@mui/icons-material/Code';
+import StorageIcon from '@mui/icons-material/Storage';
+import TerminalIcon from '@mui/icons-material/Terminal';
+import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { motion } from 'motion/react';
 
 interface SkillsSectionProps {
@@ -11,43 +25,50 @@ export const SkillsSection = ({ categories }: SkillsSectionProps) => {
   const getCategoryIcon = (iconName: string) => {
     switch (iconName) {
       case 'Code2':
-        return <Code2 className="w-4 h-4 text-blue-600" />;
+        return <CodeIcon color="primary" sx={{ fontSize: 18 }} />;
       case 'Database':
-        return <Database className="w-4 h-4 text-blue-600" />;
+        return <StorageIcon color="primary" sx={{ fontSize: 18 }} />;
       case 'Terminal':
-        return <Terminal className="w-4 h-4 text-amber-600" />;
+        return <TerminalIcon sx={{ fontSize: 18, color: '#d97706' }} />;
       case 'Palette':
-        return <Palette className="w-4 h-4 text-purple-600" />;
+        return <PaletteOutlinedIcon sx={{ fontSize: 18, color: '#9333ea' }} />;
       case 'Sparkles':
       default:
-        return <Sparkles className="w-4 h-4 text-emerald-600" />;
+        return <AutoAwesomeIcon sx={{ fontSize: 18, color: 'success.main' }} />;
     }
   };
 
   return (
-    <section id="skills" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
+    <Container maxWidth="md" id="skills" component="section" sx={{ py: 8 }}>
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <Cpu className="w-3.5 h-3.5" />
-          Technical Stack
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Skills & Technologies
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Organized by domain for clean readability and practical application across full-stack systems.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <MemoryIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Technical Stack
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Skills & Technologies
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Organized by domain for clean readability and practical application across full-stack systems.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Single Column Grouped Domains */}
-      <div className="space-y-6">
+      {/* Grouped Domain Cards */}
+      <Stack spacing={3}>
         {categories.map((category, idx) => (
           <motion.div
             key={category.title}
@@ -55,38 +76,72 @@ export const SkillsSection = ({ categories }: SkillsSectionProps) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="p-5 rounded-2xl bg-white border border-zinc-200 shadow-xs space-y-3"
           >
-            {/* Category Header */}
-            <div className="flex items-center gap-2.5">
-              <div className="p-1.5 rounded-lg bg-zinc-100 border border-zinc-200">
-                {getCategoryIcon(category.icon)}
-              </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-zinc-900 font-heading">
-                  {category.title}
-                </h3>
-                <p className="text-xs text-zinc-500">
-                  {category.description}
-                </p>
-              </div>
-            </div>
+            <Card
+              variant="outlined"
+              sx={{
+                p: { xs: 2, sm: 2.5 },
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                '&:hover': {
+                  borderColor: '#d4d4d8',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                {/* Category Header */}
+                <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2 }}>
+                  <Box
+                    sx={{
+                      p: 1,
+                      borderRadius: 2,
+                      bgcolor: 'rgba(244, 244, 245, 1)',
+                      border: '1px solid #e4e4e7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {getCategoryIcon(category.icon)}
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                      {category.title}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {category.description}
+                    </Typography>
+                  </Box>
+                </Stack>
 
-            {/* Skill Chips with Dedicated Icons */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {category.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-xs font-mono text-zinc-700 transition-colors"
-                >
-                  <TechIcon name={skill} className="w-3.5 h-3.5" />
-                  <span>{skill}</span>
-                </span>
-              ))}
-            </div>
+                {/* Skill Chips with Dedicated Icons */}
+                <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
+                  {category.skills.map((skill) => (
+                    <Chip
+                      key={skill}
+                      size="small"
+                      variant="outlined"
+                      icon={<TechIcon name={skill} className="w-3.5 h-3.5" />}
+                      label={skill}
+                      sx={{
+                        fontSize: '0.75rem',
+                        fontFamily: 'monospace',
+                        bgcolor: 'rgba(250, 250, 250, 0.8)',
+                        borderColor: '#e4e4e7',
+                        py: 0.5,
+                        '&:hover': {
+                          bgcolor: 'rgba(244, 244, 245, 1)',
+                          borderColor: '#d4d4d8',
+                        },
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </Stack>
+    </Container>
   );
 };

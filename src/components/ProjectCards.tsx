@@ -1,6 +1,23 @@
 import { Project } from '../types';
 import { TechIcon } from './TechIcon';
-import { ArrowUpRight, Github, ExternalLink, Sparkles, Layers, FileCode2 } from 'lucide-react';
+import {
+  Box,
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Chip,
+  Stack,
+  Divider,
+} from '@mui/material';
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CodeIcon from '@mui/icons-material/Code';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LaunchIcon from '@mui/icons-material/Launch';
+import NorthEastIcon from '@mui/icons-material/NorthEast';
 import { motion } from 'motion/react';
 
 interface ProjectCardsProps {
@@ -10,126 +27,183 @@ interface ProjectCardsProps {
 
 export const ProjectCards = ({ projects, onSelectProject }: ProjectCardsProps) => {
   return (
-    <section id="projects" className="py-20 max-w-3xl mx-auto px-4 sm:px-6">
+    <Container maxWidth="md" id="projects" component="section" sx={{ py: 8 }}>
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-10 pb-4 border-b border-zinc-200"
       >
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-blue-600 mb-1.5">
-          <Layers className="w-3.5 h-3.5" />
-          Featured Systems
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-heading">
-          Projects
-        </h2>
-        <p className="text-zinc-600 text-sm mt-1">
-          Full-stack systems built to replace error-prone workflows, manual ledgers, and configuration drift.
-        </p>
+        <Box sx={{ mb: 5, pb: 2, borderBottom: '1px solid #e4e4e7' }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+            <LayersOutlinedIcon color="primary" sx={{ fontSize: 18 }} />
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ fontFamily: 'monospace', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Featured Systems
+            </Typography>
+          </Stack>
+          <Typography variant="h3" sx={{ fontWeight: 800, color: 'text.primary', mb: 0.5 }}>
+            Projects
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Full-stack systems built to replace error-prone workflows, manual ledgers, and configuration drift.
+          </Typography>
+        </Box>
       </motion.div>
 
-      {/* Single Column Sequential Showcase */}
-      <div className="space-y-8">
+      {/* Sequential MUI Card Showcase */}
+      <Stack spacing={4}>
         {projects.map((project, idx) => (
           <motion.div
             key={project.id}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            id={`project-item-${project.id}`}
-            className="p-6 sm:p-7 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:shadow-md hover:border-zinc-300 transition-all duration-200 space-y-4"
+            transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Top Bar: Category & Index */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">
-                {project.category}
-              </span>
-              <span className="text-xs font-mono text-zinc-600">
-                0{idx + 1}
-              </span>
-            </div>
+            <Card
+              variant="outlined"
+              id={`project-item-${project.id}`}
+              sx={{
+                p: { xs: 2.5, sm: 3.5 },
+                borderRadius: '8px',
+                bgcolor: '#ffffff',
+                '&:hover': {
+                  borderColor: 'primary.light',
+                  boxShadow: '0 8px 24px -4px rgba(0,0,0,0.06)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                {/* Top Category Badge & Index */}
+                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Chip
+                    label={project.category}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    sx={{
+                      fontSize: '0.7rem',
+                      fontFamily: 'monospace',
+                      fontWeight: 600,
+                      bgcolor: 'rgba(37, 99, 235, 0.04)',
+                    }}
+                  />
+                  <Typography variant="caption" sx={{ fontFamily: 'monospace', color: 'text.secondary', fontWeight: 600 }}>
+                    0{idx + 1}
+                  </Typography>
+                </Stack>
 
-            {/* Title & Tagline */}
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 font-heading">
-                {project.title}
-              </h3>
-              <p className="text-zinc-600 text-sm leading-relaxed mt-1">
-                {project.tagline}
-              </p>
-            </div>
+                {/* Title & Tagline */}
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                    {project.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                    {project.tagline}
+                  </Typography>
+                </Box>
 
-            {/* Verified Impact Highlight */}
-            <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/80 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs text-zinc-600">
-                  {project.metrics[0].description}
-                </span>
-              </div>
-              <span className="text-sm font-bold font-mono text-zinc-900 shrink-0">
-                {project.metrics[0].highlight}
-              </span>
-            </div>
-
-            {/* Technologies */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full bg-zinc-100/80 text-zinc-700 border border-zinc-200"
+                {/* Verified Impact Highlight */}
+                <Card
+                  variant="outlined"
+                  sx={{
+                    bgcolor: 'rgba(244, 244, 245, 0.6)',
+                    borderColor: '#e4e4e7',
+                    borderRadius: '8px',
+                    p: 1.5,
+                    mb: 2.5,
+                  }}
                 >
-                  <TechIcon name={tag} className="w-3 h-3" />
-                  <span>{tag}</span>
-                </span>
-              ))}
-            </div>
+                  <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                      <AutoAwesomeIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                      <Typography variant="caption" color="text.secondary">
+                        {project.metrics[0].description}
+                      </Typography>
+                    </Stack>
+                    <Typography variant="subtitle2" sx={{ fontFamily: 'monospace', fontWeight: 700, color: 'text.primary', whiteSpace: 'nowrap' }}>
+                      {project.metrics[0].highlight}
+                    </Typography>
+                  </Stack>
+                </Card>
 
-            {/* Actions Bar */}
-            <div className="pt-2 flex flex-wrap items-center gap-2.5 border-t border-zinc-100">
-              <button
-                onClick={() => onSelectProject(project)}
-                id={`btn-case-study-${project.id}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs transition-all shadow-xs cursor-pointer"
-              >
-                <FileCode2 className="w-3.5 h-3.5" />
-                Read Case Study
-                <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
-              </button>
+                {/* Tech Stack Chips */}
+                <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, mb: 2.5 }}>
+                  {project.tags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      size="small"
+                      variant="outlined"
+                      icon={<TechIcon name={tag} className="w-3 h-3" />}
+                      label={tag}
+                      sx={{
+                        fontSize: '0.7rem',
+                        fontFamily: 'monospace',
+                        bgcolor: 'rgba(244, 244, 245, 0.5)',
+                        borderColor: '#e4e4e7',
+                      }}
+                    />
+                  ))}
+                </Stack>
 
-              {project.links.github && (
-                <a
-                  href={project.links.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${project.title} GitHub Repo`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-zinc-50 text-zinc-700 hover:text-zinc-950 border border-zinc-200 text-xs font-mono transition-colors"
-                >
-                  <Github className="w-3.5 h-3.5 text-zinc-600" />
-                  Source Code
-                </a>
-              )}
+                <Divider sx={{ my: 2 }} />
 
-              {project.links.liveDemo && (
-                <a
-                  href={project.links.liveDemo}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${project.title} Live Demo`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-mono transition-colors"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
-                  Live Demo
-                </a>
-              )}
-            </div>
+                {/* Card Actions */}
+                <CardActions sx={{ p: 0, gap: 1, flexWrap: 'wrap' }}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    onClick={() => onSelectProject(project)}
+                    id={`btn-case-study-${project.id}`}
+                    startIcon={<CodeIcon fontSize="small" />}
+                    endIcon={<NorthEastIcon sx={{ fontSize: 14 }} />}
+                    sx={{ fontSize: '0.75rem', py: 0.8, px: 2 }}
+                  >
+                    Read Case Study
+                  </Button>
+
+                  {project.links.github && (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      component="a"
+                      href={project.links.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      startIcon={<GitHubIcon fontSize="small" />}
+                      sx={{ fontSize: '0.75rem', py: 0.8, px: 2, fontFamily: 'monospace' }}
+                    >
+                      Source Code
+                    </Button>
+                  )}
+
+                  {project.links.liveDemo && (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      component="a"
+                      href={project.links.liveDemo}
+                      target="_blank"
+                      rel="noreferrer"
+                      startIcon={<LaunchIcon fontSize="small" />}
+                      sx={{ fontSize: '0.75rem', py: 0.8, px: 2, fontFamily: 'monospace' }}
+                    >
+                      Live Demo
+                    </Button>
+                  )}
+                </CardActions>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
-      </div>
-    </section>
+      </Stack>
+    </Container>
   );
 };
