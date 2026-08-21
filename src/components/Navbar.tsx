@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEvent } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import { scrollToSection } from '../utils/scroll';
 import {
   AppBar,
   Toolbar,
@@ -84,6 +85,10 @@ export const Navbar = ({ onOpenResume, activeSection }: NavbarProps) => {
                 <Button
                   key={link.name}
                   href={link.href}
+                  onClick={(e: MouseEvent) => {
+                    e.preventDefault();
+                    scrollToSection(link.href.substring(1));
+                  }}
                   size="small"
                   sx={{
                     color: isActive ? 'primary.main' : 'text.secondary',
@@ -194,7 +199,11 @@ export const Navbar = ({ onOpenResume, activeSection }: NavbarProps) => {
                 <ListItemButton
                   component="a"
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e: MouseEvent) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    scrollToSection(link.href.substring(1));
+                  }}
                   sx={{
                     borderRadius: 2,
                     py: 1,

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import { scrollToSection } from '../utils/scroll';
 import { TechIcon } from './TechIcon';
 import {
   Box,
@@ -112,6 +113,10 @@ export const Hero = ({ onOpenResume }: HeroProps) => {
                 variant="contained"
                 color="secondary"
                 href="#projects"
+                onClick={(e: MouseEvent) => {
+                  e.preventDefault();
+                  scrollToSection('projects');
+                }}
                 id="hero-view-work-cta"
                 endIcon={<ArrowForwardIcon fontSize="small" />}
                 sx={{ px: 3, py: 1.2 }}
@@ -122,6 +127,10 @@ export const Hero = ({ onOpenResume }: HeroProps) => {
               <Button
                 variant="outlined"
                 href="#experience"
+                onClick={(e: MouseEvent) => {
+                  e.preventDefault();
+                  scrollToSection('experience');
+                }}
                 id="hero-view-experience-cta"
                 startIcon={<WorkHistoryOutlinedIcon color="primary" fontSize="small" />}
                 sx={{ px: 2.5, py: 1.2 }}

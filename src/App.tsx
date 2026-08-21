@@ -19,11 +19,17 @@ import { CaseStudyModal } from './components/CaseStudyModal';
 import { ResumeModal } from './components/ResumeModal';
 import { projects, skillCategories, experienceData, educationData, courseCertifications, testimonials } from './data/portfolioData';
 import { Project } from './types';
+import { handleInitialHash } from './utils/scroll';
 
 export default function App() {
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<Project | null>(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('hero');
+
+  // Clean shared links that contain a hash and scroll to the target section
+  useEffect(() => {
+    handleInitialHash();
+  }, []);
 
   // Track active section for navigation highlighting
   useEffect(() => {

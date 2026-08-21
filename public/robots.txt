@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://clevensam.github.io/Portfolio/sitemap.xml
